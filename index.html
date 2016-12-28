@@ -104,11 +104,11 @@ http://azmind.com/bootstrap-wizard/
                             <fieldset>
                                 <h4></h4>
                                 <div id="container" >
-                                    <div id="exTab2"> 
-                                        <ul class="nav nav-tabs">
-                                            <li class="active"><a  href="#1" data-toggle="tab">Create Post</a></li>
-                                            <li><a href="#2" data-toggle="tab">Upload Image</a></li>
-                                            <!--li><a href="#3" data-toggle="tab">Upload Image</a></li-->
+                                    <div> 
+                                        <ul id="edit-site-tabs" class="nav nav-tabs">
+                                            <li class="active"><a  href="#1" data-toggle="tab" data-type="0">Create Post</a></li>
+                                            <li><a href="#3" data-toggle="tab" data-type="0">Edit Post</a></li>
+                                            <li><a href="#2" data-toggle="tab" data-type="1">Upload Image</a></li>
                                         </ul>
 
                                         <div class="tab-content ">
@@ -133,17 +133,20 @@ http://azmind.com/bootstrap-wizard/
                                                         <hr>
                                                         <ul id="post-content-list" class="sortable">
                                                             <li>
-                                                                <label class="" for="f1-post-content">Content 1:</label>
+                                                                <label class="" for="f1-post-content">Paragraph:</label>
                                                                 <textarea name="f1-post-content" placeholder="Say what you want to say..." class="f1-post-content form-control" id="f1-post-content"></textarea>
                                                             </li>
                                                             <li>
-                                                                <label class="" for="f1-post-content">Content 2:</label>
+                                                                <label class="" for="f1-post-content">Paragraph:</label>
                                                                 <textarea name="f1-post-content" placeholder="Say what you want to say..." class="f1-post-content form-control" id="f1-post-content"></textarea>
                                                             </li>
                                                         </ul>
-
                                                         <div id="add-content">+</div>
                                                     </div>
+                                                </div>
+                                    
+                                                <div class="f1-buttons">
+                                                    <button type="button" id="publish" class="btn">Publish</button>
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="2">
@@ -151,7 +154,7 @@ http://azmind.com/bootstrap-wizard/
                                                     <!--Upload-->
                                                     <h4>Upload File</h4>
                                                     <input type="file" id="files" name="files" multiple/>
-                                                    <button type="button" id="submit" class="btn btn-next">Submit</button>
+                                                    <button type="button" id="submit" class="btn">Submit</button>
                                                 </div>
                                             </div>
                                             <!--div class="tab-pane" id="3">
@@ -159,12 +162,8 @@ http://azmind.com/bootstrap-wizard/
                                             </div-->
                                         </div>
                                     </div>
-                                    
-                                    <div class="f1-buttons">
-                                        <!--input type="submit" id="submit" class="btn btn-next" value="Publish"/-->
-                                        <button type="button" class="btn btn-previous">Previous</button>
-                                        <button type="button" id="publish" class="btn btn-next">Publish</button>
-                                    </div>
+                                    <!--input type="submit" id="submit" class="btn btn-next" value="Publish"/-->
+                                    <button type="button" class="btn btn-previous">Previous</button>
                                     <div id="results"></div>
                                     <div id="repo-list"></div>
                                 </div>
@@ -196,7 +195,7 @@ http://azmind.com/bootstrap-wizard/
         <script src="assets/js/jquery.backstretch.min.js"></script>
         <script src="assets/js/retina-1.1.0.min.js"></script>
         <script src="assets/js/scripts.js"></script>
-        <script src="assets/js/githubadmin.js"></script>
+        <script src="assets/js/pagemin.js"></script>
         
         <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>
