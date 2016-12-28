@@ -11,7 +11,7 @@ $(document).ready(function(){
 });
 
 
-$("#finish-button").click(function(event){
+$("#connect-button").click(function(event){
     username = $("#f1-username").val();
     password = $("#f1-password").val();
     reponame = $("#f1-repo-name").val();
@@ -20,9 +20,31 @@ $("#finish-button").click(function(event){
     //$("#edit-screen").show();
     //Edit progress bar text
     $("#setup-screen > div > div:nth-child(2) > div > form > h3").html("Edit your site");
-    $("#setup-screen > div > div:nth-child(2) > div > form > p").html("Click the publish button to save your changes.")
+    $("#setup-screen > div > div:nth-child(2) > div > form > p").html("Click the publish button to save your changes.");
 });
 
+$("#edit-post-tab").click(function(){
+    grabposts(username,password,reponame)
+});
+
+function grabposts(username, password, reponame){
+    //GET /repos/:owner/:repo/git/trees/:sha?recursive=1
+    //GET /repos/:owner/:repo/contents/
+    $.ajax({
+        type: "GET",
+        url: "https://api.github.com/repos/"+username+"/l3rittny.github.io/contents/_posts",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+        },
+        dataType: "json",
+        success: function(result) {
+            console.log(result); 
+            for(var i=0;i<result.length;i++){
+                $("#post-list").append("<option>"+result[i].name+"</option>");
+            }
+        }
+    });
+}
 
 var filesInput = document.getElementById("files");
 

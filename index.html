@@ -97,7 +97,7 @@ http://azmind.com/bootstrap-wizard/
                                 </div>
                                 <div class="f1-buttons">
                                     <button type="button" class="btn btn-previous">Previous</button>
-                                    <button type="button" class="btn btn-next" id="finish-button">Connect</button>
+                                    <button type="button" class="btn btn-next" id="connect-button">Connect</button>
                                 </div>
                             </fieldset>
 
@@ -107,8 +107,8 @@ http://azmind.com/bootstrap-wizard/
                                     <div> 
                                         <ul id="edit-site-tabs" class="nav nav-tabs">
                                             <li class="active"><a  href="#1" data-toggle="tab" data-type="0">Create Post</a></li>
-                                            <li><a href="#3" data-toggle="tab" data-type="0">Edit Post</a></li>
-                                            <li><a href="#2" data-toggle="tab" data-type="1">Upload Image</a></li>
+                                            <li><a href="#2" data-toggle="tab" data-type="0" id="edit-post-tab">Edit Post</a></li>
+                                            <li><a href="#3" data-toggle="tab" data-type="1">Upload Image</a></li>
                                         </ul>
 
                                         <div class="tab-content ">
@@ -125,7 +125,7 @@ http://azmind.com/bootstrap-wizard/
                                                         <label class="" for="f1-post-date">Date:</label>
                                                         <input type="text" name="f1-post-date" placeholder="YYYY-MM-DD HH:MM:SS" class="f1-post-date form-control" id="f1-post-date">
 
-                                                        <label class="" for="f1-post-author">Auhtor:</label>
+                                                        <label class="" for="f1-post-author">Author:</label>
                                                         <input type="text" name="f1-post-author" placeholder="Your Name" class="f1-post-author form-control" id="f1-post-author">
                                                         <br>
                                                         <hr>
@@ -144,17 +144,21 @@ http://azmind.com/bootstrap-wizard/
                                                         <div id="add-content">+</div>
                                                     </div>
                                                 </div>
-                                    
-                                                <div class="f1-buttons">
-                                                    <button type="button" id="publish" class="btn">Publish</button>
-                                                </div>
                                             </div>
                                             <div class="tab-pane" id="2">
                                                 <div class="form-group">
                                                     <!--Upload-->
-                                                    <h4>Upload File</h4>
+                                                    <h4>Select Post</h4>
+                                                    <select id="post-list"></select>
+                                                    <button type="button" id="edit-post" class="btn">Edit</button>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="3">
+                                                <div class="form-group">
+                                                    <!--Upload-->
+                                                    <h4>Select File</h4>
                                                     <input type="file" id="files" name="files" multiple/>
-                                                    <button type="button" id="submit" class="btn">Submit</button>
+                                                    <button type="button" id="submit" class="btn">Upload</button>
                                                 </div>
                                             </div>
                                             <!--div class="tab-pane" id="3">
@@ -163,7 +167,10 @@ http://azmind.com/bootstrap-wizard/
                                         </div>
                                     </div>
                                     <!--input type="submit" id="submit" class="btn btn-next" value="Publish"/-->
-                                    <button type="button" class="btn btn-previous">Previous</button>
+                                    <div class="f1-buttons">
+                                        <button type="button" class="btn btn-previous">Previous</button>
+                                        <button type="button" id="publish" class="btn">Publish</button>
+                                    </div>
                                     <div id="results"></div>
                                     <div id="repo-list"></div>
                                 </div>
