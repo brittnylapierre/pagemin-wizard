@@ -1,6 +1,14 @@
+var dataTypeToSend = 0;
+
 
 var filesArray = [];
 var auth, authid, token, repourl, curl, username, password, reponame, repo;
+
+
+$(document).ready(function(){
+    $(".sortable").sortable();
+    $(".sortable").disableSelection();
+});
 
 
 $("#finish-button").click(function(event){
@@ -87,12 +95,21 @@ function getrepoandpublish(username, password, reponame, isUpload){
                 console.log("i: " + i + " name: " + result[i].name);
             }
             console.log(result, "\n", repo);
-            if(isUpload){
-                postfiles(username, password, repo); 
-            } 
-            else{
-                createfileandpost(username, password, repo);
-            } 
+
+            switch (dataTypeToSend){
+                //Upload
+                case 0:
+                    postfiles(username, password, repo); 
+                    break;
+
+                //Create a post
+                case 1:
+                    createfileandpost(username, password, repo);
+                    break;
+
+                default:
+                    break;
+            }
         }
     });
 }
@@ -144,33 +161,10 @@ function postfiles(username, password, repo){
         var filecontent = reader.result;
         var basecontent = btoa(unescape(encodeURIComponent(filecontent)));
         if(fileType.indexOf('image') !== 0){
-            ///repos/:owner/:repo/contents/:path
-            /*var apiurl = repo.contents_url.replace('{+path}',filename);
-            console.log('apiurl: ', apiurl);
-            var filedata = '{"message":"'+filemessage+'","content":"'+basecontent+'"}';
-
-            $.ajax({ 
-                url: apiurl,
-                type: 'PUT',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
-                },
-                data: filedata,
-                success: function(response) {
-                    $("#results").text("Uploading...");
-                    postfiles();
-                },
-                error: function(err) {
-                    $("#results").text("File Upload Failed.");
-                    console.log(err);
-                    postfiles();
-                }
-            });*/
             sendfile(username, password, filename, basecontent, repo);
         }
         else {
-            var dataurl = getBase64(username, password, f, repo);
-            //<img alt="Embedded Image" src="data:image/png;base64
+            var dataurl = getimagebase64andsend(username, password, f, repo);
             }
     }
     reader.readAsText(f,"UTF-8");
@@ -179,6 +173,7 @@ function postfiles(username, password, repo){
     $("#results").html('Finished.');
   }
 }
+
 
 function sendfile(username, password, filename, basecontent, repo){
     var filemessage = "uploading a file";
@@ -205,7 +200,7 @@ function sendfile(username, password, filename, basecontent, repo){
     });
 }
 
-function getBase64(username, password, file, repo) {
+function getimagebase64andsend(username, password, file, repo) {
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {

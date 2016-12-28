@@ -22,6 +22,34 @@
 	margin-top: 15px;
 }
 
+#post-content-list{
+	padding: 0;
+	list-style-type: none;
+}
+
+#post-content-list > *{
+	cursor: pointer;
+}
+
+#add-content{
+	padding: 20px;
+    border: 1px solid #813FF3;
+    color: #813FF3;
+    width: 80px;
+    text-align: center;
+    font-size: 4rem;
+    border-radius: 16px;
+    margin: 20px auto;
+}
+
+
+#add-content:hover{
+	color: #fff;
+    background-color: #813FF3;
+    cursor: pointer;
+}
+
+
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
