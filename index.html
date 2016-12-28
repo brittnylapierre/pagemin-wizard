@@ -58,7 +58,7 @@ http://azmind.com/bootstrap-wizard/
                     		<p>Fill in the form to get started.</p>
                     		<div class="f1-steps">
                     			<div class="f1-progress">
-                    			    <div class="f1-progress-line" data-now-value="25" data-number-of-steps="2" style="width: 25%;"></div>
+                    			    <div class="f1-progress-line" data-now-value="16.66" data-number-of-steps="3" style="width: 16.66%;"></div>
                     			</div>
                     			<div class="f1-step active">
                     				<div class="f1-step-icon"><i class="fa fa-user"></i></div>
@@ -68,10 +68,14 @@ http://azmind.com/bootstrap-wizard/
                     				<div class="f1-step-icon"><i class="fa fa-key"></i></div>
                     				<p>Connect to Repo</p>
                     			</div>
+                                <div class="f1-step">
+                                    <div class="f1-step-icon"><i class="fa fa-pencil"></i></div>
+                                    <p>Edit Site</p>
+                                </div>
                     		</div>
                     		
                     		<fieldset>
-                    		    <h4>Sign into your GitHub Pages Admin Account:</h4>
+                    		    <h4>Sign into your GitHub Pages admin account:</h4>
                     			<div class="form-group">
                     			    <label class="sr-only" for="f1-username">Username</label>
                                     <input type="text" name="f1-username" placeholder="username" class="f1-username form-control" id="f1-username">
@@ -86,36 +90,61 @@ http://azmind.com/bootstrap-wizard/
                             </fieldset>
 
                             <fieldset>
-                                <h4>Repo Info:</h4>
+                                <h4>Enter repo info:</h4>
                                 <div class="form-group">
                                     <label class="sr-only" for="f1-repo-name">Name</label>
                                     <input type="text" name="f1-repo-name" placeholder="repo name" class="f1-repo-name form-control" id="f1-repo-name">
                                 </div>
                                 <div class="f1-buttons">
                                     <button type="button" class="btn btn-previous">Previous</button>
-                                    <button type="button" class="btn btn-next" id="finish-button">Finish Setup</button>
+                                    <button type="button" class="btn btn-next" id="finish-button">Connect</button>
                                 </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <h4></h4>
+                                <div id="container" >
+                                    <div id="side">
+                                    <div class="form-group">
+                                        <!--POSTS-->
+                                        <h4>New Post</h4>
+                                        <div id="new-post-form">
+                                            <label class="" for="f1-post-title">Title:</label>
+                                            <input type="text" name="f1-post-title" placeholder="Your Awesome Title" class="f1-post-title form-control" id="f1-post-title">
+
+                                            <label class="" for="f1-post-subtitle">Subtitle:</label>
+                                            <input type="text" name="f1-post-subtitle" placeholder="A catchy tagline." class="f1-post-subtitle form-control" id="f1-post-subtitle">
+
+                                            <label class="" for="f1-post-date">Date:</label>
+                                            <input type="text" name="f1-post-date" placeholder="YYYY-MM-DD HH:MM:SS" class="f1-post-date form-control" id="f1-post-date">
+
+                                            <label class="" for="f1-post-author">Auhtor:</label>
+                                            <input type="text" name="f1-post-author" placeholder="Your Name" class="f1-post-author form-control" id="f1-post-author">
+
+                                            <label class="" for="f1-post-content">Content:</label>
+                                            <textarea name="f1-post-content" placeholder="Say what you want to say..." class="f1-post-content form-control" id="f1-post-content"></textarea>
+                                        </div>
+
+                                        
+                                    </div>
+                                    <div class="f1-buttons">
+                                        <!--input type="submit" id="submit" class="btn btn-next" value="Publish"/-->
+                                        <button type="button" class="btn btn-previous">Previous</button>
+                                        <button type="button" id="publish" class="btn btn-next">Publish</button>
+                                        <input type="file" id="files" name="files" multiple/>
+                                        <button type="button" id="submit" class="btn btn-next">Submit</button>
+                                    </div>
+                                    <div id="results"></div>
+                                    <div id="repo-list"></div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <h4>Thanks! You'll see the changes on your website in a moment.</h4>
                             </fieldset>
                     	</form>
                     </div>
                 </div>    
-            </div>
-        </div>
-
-        <div class="top-content" id="edit-screen">
-            <div id="container" >
-                <div id="info">
-                    <h1>Edit your website!</h1>
-                </div>
-
-                <div id="side">
-                <form id="githubForm" onsubmit="return false;">
-                    <input type="file" id="files" name="files" multiple/>
-                    <input type="submit" id="submit" value="Upload"/>
-                </form>
-                </div>
-                <div id="results"></div>
-                <div id="repo-list"></div>
             </div>
         </div>
 

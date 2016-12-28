@@ -8,8 +8,11 @@ $("#finish-button").click(function(event){
     password = $("#f1-password").val();
     reponame = $("#f1-repo-name").val();
 
-    $("#setup-screen").hide();
-    $("#edit-screen").show();
+    //$("#setup-screen").hide();
+    //$("#edit-screen").show();
+    //Edit progress bar text
+    $("#setup-screen > div > div:nth-child(2) > div > form > h3").html("Edit your site");
+    $("#setup-screen > div > div:nth-child(2) > div > form > p").html("Click the publish button to save your changes.")
 });
 
 
@@ -28,7 +31,12 @@ filesInput.addEventListener("change", function (e) {
 
 
 $("#submit").click(function(event){
-    getrepoandpostfiles(username, password, reponame);
+    getrepoandpublish(username, password, reponame, true);
+});
+
+
+$("#publish").click(function(event){
+    getrepoandpublish(username, password, reponame, true);
 });
 
 
@@ -65,7 +73,7 @@ function getrepo(username, password, reponame){
 }
 
 
-function getrepoandpostfiles(username, password, reponame){
+function getrepoandpublish(username, password, reponame, isUpload){
     $.ajax({
         type: "GET",
         url: "https://api.github.com/users/"+username+"/repos",
@@ -79,7 +87,39 @@ function getrepoandpostfiles(username, password, reponame){
                 console.log("i: " + i + " name: " + result[i].name);
             }
             console.log(result, "\n", repo);
-            postfiles(username, password, repo);    
+            if(isUpload){
+                postfiles(username, password, repo); 
+            } 
+            else{
+                createfileandpost(username, password, repo);
+            } 
+        }
+    });
+}
+
+function createfileandpost(username, password, repo){
+    $("#results").text("Uploading Files to GitHub Repository. "+filesArray.length+" files left to upload.");
+
+    var basecontent = btoa(unescape(encodeURIComponent(filecontent)));
+    var apiurl = repo.contents_url.replace('{+path}',filename);
+    console.log('apiurl: ', apiurl);
+    var filedata = '{"message":"'+filemessage+'","content":"'+basecontent+'"}';
+
+    $.ajax({ 
+        url: apiurl,
+        type: 'PUT',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+        },
+        data: filedata,
+        success: function(response) {
+            $("#results").text("Finished...");
+            postfiles();
+        },
+        error: function(err) {
+            $("#results").text("File Upload Failed.");
+            console.log(err);
+            postfiles();
         }
     });
 }
@@ -93,50 +133,92 @@ function postfiles(username, password, repo){
     var f = filesArray.pop();
     console.log(f);
 
+    var fileType = f.type;
+    console.log(fileType);
     var filename = f.name;//f.webkitRelativePath;
     console.log("file: ", filename);
-    var filemessage = "uploading a file";
 
     var reader = new FileReader();
 
     reader.onload = function(e) {
-
         var filecontent = reader.result;
-        //var basecontent = btoa(filecontent);
         var basecontent = btoa(unescape(encodeURIComponent(filecontent)));
-        ///repos/:owner/:repo/contents/:path
-        var apiurl = repo.contents_url.replace('{+path}',filename);
-        console.log('apiurl: ', apiurl);
-        var filedata = '{"message":"'+filemessage+'","content":"'+basecontent+'"}';
+        if(fileType.indexOf('image') !== 0){
+            ///repos/:owner/:repo/contents/:path
+            /*var apiurl = repo.contents_url.replace('{+path}',filename);
+            console.log('apiurl: ', apiurl);
+            var filedata = '{"message":"'+filemessage+'","content":"'+basecontent+'"}';
 
-        $.ajax({ 
-            url: apiurl,
-            type: 'PUT',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
-            },
-            data: filedata,
-            success: function(response) {
-                $("#results").text("Uploading...");
-                postfiles();
-            },
-            error: function(err) {
-                $("#results").text("File Upload Failed.");
-                console.log(err);
-                postfiles();
+            $.ajax({ 
+                url: apiurl,
+                type: 'PUT',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+                },
+                data: filedata,
+                success: function(response) {
+                    $("#results").text("Uploading...");
+                    postfiles();
+                },
+                error: function(err) {
+                    $("#results").text("File Upload Failed.");
+                    console.log(err);
+                    postfiles();
+                }
+            });*/
+            sendfile(username, password, filename, basecontent, repo);
+        }
+        else {
+            var dataurl = getBase64(username, password, f, repo);
+            //<img alt="Embedded Image" src="data:image/png;base64
             }
-        });
     }
-
     reader.readAsText(f,"UTF-8");
-
   } 
   else {
     $("#results").html('Finished.');
   }
 }
 
+function sendfile(username, password, filename, basecontent, repo){
+    var filemessage = "uploading a file";
+    var apiurl = repo.contents_url.replace('{+path}',filename);
+    console.log('apiurl: ', apiurl);
+    var filedata = '{"message":"'+filemessage+'","content":"'+basecontent+'"}';
 
+    $.ajax({ 
+        url: apiurl,
+        type: 'PUT',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+        },
+        data: filedata,
+        success: function(response) {
+            $("#results").text("Uploading...");
+            postfiles();
+        },
+        error: function(err) {
+            $("#results").text("File Upload Failed.");
+            console.log(err);
+            postfiles();
+        }
+    });
+}
+
+function getBase64(username, password, file, repo) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        var dataurl = reader.result;
+        console.log('\nRES:\n', dataurl);
+        $("body").append('<img alt="Embedded Image" src="'+dataurl+'"/>');
+        sendfile(username, password, file.name + ".b64is", btoa(unescape(encodeURIComponent(dataurl))), repo);
+         $("body").append('<img alt="Embedded Image" src="'+atob(btoa(unescape(encodeURIComponent(dataurl))+'"/>')));
+    };
+    reader.onerror = function (error) {
+        console.log('Error: ', error);
+    };
+}
 /*function delauth(username, password){
     $.ajax({ 
         url: 'https://api.github.com/authorizations/'+authid,
